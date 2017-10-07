@@ -1,6 +1,6 @@
 package it.n26.domain;
 
-public class StatisticResponse {
+public class TransactionStatisticResponse {
 
     private double sum;
     private double avg;
@@ -8,10 +8,10 @@ public class StatisticResponse {
     private double min;
     private long count;
 
-    public StatisticResponse() {
+    public TransactionStatisticResponse() {
     }
 
-    public StatisticResponse(double sum, double avg, double max, double min, long count) {
+    public TransactionStatisticResponse(double sum, double avg, double max, double min, long count) {
         this.sum = sum;
         this.avg = avg;
         this.max = max;
@@ -61,7 +61,7 @@ public class StatisticResponse {
 
     @Override
     public String toString() {
-        return "StatisticResponse{" +
+        return "TransactionStatisticResponse{" +
                 "sum=" + sum +
                 ", avg=" + avg +
                 ", max=" + max +
