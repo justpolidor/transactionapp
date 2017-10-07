@@ -25,14 +25,4 @@ import static org.junit.Assert.assertThat;
 @JsonTest
 public class TransactionsApplicationTest {
 
-    @MockBean
-    private DefaultTransactionService defaultTransactionService;
-
-    @MockBean
-    private DefaultTransactionStatisticService defaultTransactionStatisticService;
-
-    @Autowired
-    private JacksonTester<TransactionStatisticResponse> responseJacksonTester;
-
-
 }

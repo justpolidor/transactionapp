@@ -80,11 +80,7 @@
                 <artifactId>resteasy-crypto</artifactId>
                 <version>${resteasy.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-validator-provider-11</artifactId>
-                <scope>provided</scope>
-            </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-parameter-names</artifactId>
