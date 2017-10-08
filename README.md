@@ -26,7 +26,6 @@ POST /api/transactions Content-Type: application/json
 ```
 
 ### GET
-GET /api/statistics Content-Type: application/json
 ```json
 GET /api/statistics Content-Type: application/json
 {
