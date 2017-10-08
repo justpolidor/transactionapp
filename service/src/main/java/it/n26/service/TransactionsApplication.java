@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @SpringBootApplication
 @Import(value = {RepositorySetup.class})
-@EnableScheduling
 public class TransactionsApplication {
 
 	public static void main(String[] args) {
