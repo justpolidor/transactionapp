@@ -1,16 +1,16 @@
 package it.n26.domain;
 
 import it.n26.domain.repository.TransactionRepository;
+import it.n26.domain.repository.TransactionRepositoryImpl;
 import it.n26.domain.setup.RepositorySetup;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -20,8 +20,12 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest
 public class TransactionRepositoryTest {
 
-    @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
+
+    @Before
+    public void configureRepository() {
+        transactionRepository = new TransactionRepositoryImpl();
+    }
 
     @Test
     public void shouldReturnTrue() {
@@ -47,6 +51,6 @@ public class TransactionRepositoryTest {
         transactionRepository.putTransaction(transaction2);
         transactionRepository.putTransaction(transaction3);
 
-        assertThat(transactionRepository.getTransactionStatistic().getAvg(), is(500));
+        assertThat(transactionRepository.getTransactionStatistic().getAvg(), is(250.0));
     }
 }

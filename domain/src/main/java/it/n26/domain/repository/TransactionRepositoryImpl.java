@@ -22,6 +22,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     private List<Transaction> transactions = new CopyOnWriteArrayList<>();
     private List<Transaction> oldTransactions = new CopyOnWriteArrayList<>();
 
+
     @Override
     public boolean putTransaction(Transaction transaction) {
         Instant transactionTime = transaction.getTimestamp().toInstant();
