@@ -36,3 +36,29 @@ GET /api/statistics Content-Type: application/json
    "count": 2
 }
 ```
+
+## Where I store transactions
+
+As the request is not to use in memory database/sql databases ect. I opt out using 
+```java
+private Map<Instant, Transaction> buckets = new Hashtable<>();
+```
+where Instant is the timestamp of the occurred transaction, where Transaction is the whole object.
+
+The retrieve of transactions of the last 60 seconds are done in this way:
+```java
+DoubleSummaryStatistics summaryStatistics = buckets.entrySet()
+                .parallelStream()
+                .filter(k -> k.getKey().plusSeconds(60).isAfter(Instant.now()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.summarizingDouble(Transaction::getAmount));
+
+
+        LOG.info("Buckets:\n" + buckets.entrySet().toString());
+        if(!(summaryStatistics.getCount() == 0)) {
+            return Optional.of(new TransactionStatisticResponse(summaryStatistics.getSum(), summaryStatistics.getAverage(),
+                    summaryStatistics.getMax(), summaryStatistics.getMin(), summaryStatistics.getCount()));
+        }
+        return Optional.empty();
+```
+using DoubleSummaryStatistics because is an object ready to use that matches the request of average, min,max, sum and count of the amount of the various transactions. 
