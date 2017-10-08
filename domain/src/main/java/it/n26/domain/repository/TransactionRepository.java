@@ -4,12 +4,12 @@ import it.n26.domain.Transaction;
 import it.n26.domain.TransactionStatisticResponse;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Component
 public interface TransactionRepository {
 
     boolean putTransaction(Transaction transaction);
 
-    TransactionStatisticResponse getTransactionStatistic();
+    Optional<TransactionStatisticResponse> getTransactionStatistic();
 }

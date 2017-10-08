@@ -64,13 +64,17 @@ public class TransactionsApplicationTest {
 
     @Test
     public void responseShouldBeStatistic() {
-        Transaction transaction = new Transaction(200.0, new Timestamp(System.currentTimeMillis()));
-        Transaction transaction1 = new Transaction(200.0, new Timestamp(System.currentTimeMillis()));
+        Transaction transaction = new Transaction(300.0, new Timestamp(System.currentTimeMillis()+1));
+        Transaction transaction1 = new Transaction(1300.0, new Timestamp(System.currentTimeMillis()+2));
+        Transaction transaction2 = new Transaction(15025.12, new Timestamp(System.currentTimeMillis()+3));
+        Transaction transaction3 = new Transaction(87.31, new Timestamp(System.currentTimeMillis()+4));
         transactionService.insertTransaction(transaction);
         transactionService.insertTransaction(transaction1);
+        transactionService.insertTransaction(transaction2);
+        transactionService.insertTransaction(transaction3);
         TransactionStatisticResponse statisticResponse = statisticService.retrieveStatistic();
 
-        TransactionStatisticResponse mockStatisticResponse = new TransactionStatisticResponse(600.0,200.0,200.0,200.0,3);
+        TransactionStatisticResponse mockStatisticResponse = new TransactionStatisticResponse(16912.43,3382.486,15025.12,87.31,5);
         Assertions.assertThat(statisticResponse).isEqualToComparingFieldByField(mockStatisticResponse);
 
     }

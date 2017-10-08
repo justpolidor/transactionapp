@@ -3,61 +3,58 @@ package it.n26.domain.repository;
 import it.n26.domain.Transaction;
 import it.n26.domain.TransactionStatisticResponse;
 import org.slf4j.Logger;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-
 import java.time.Instant;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
-
 @Component
 public class TransactionRepositoryImpl implements TransactionRepository {
+
     private static final Logger LOG = getLogger(TransactionRepositoryImpl.class);
 
-    private List<Transaction> transactions = new CopyOnWriteArrayList<>();
-    private List<Transaction> oldTransactions = new CopyOnWriteArrayList<>();
-
+    //Instant is the timestamp of the occurred transaction so we can easily get the transaction by the timestamp
+    private Map<Instant, Transaction> buckets = new Hashtable<>();
 
     @Override
     public boolean putTransaction(Transaction transaction) {
-        Instant transactionTime = transaction.getTimestamp().toInstant();
-        LOG.info("Transaction time:" + transactionTime);
-        LOG.info("Current time:" + Instant.now());
-        if(Instant.now().minusSeconds(60).isAfter(transactionTime)){
-            LOG.info("Got and old transaction: "+transaction);
-            oldTransactions.add(transaction);
+        Instant transTime = transaction.getTimestamp().toInstant();
+
+        buckets.put(transaction.getTimestamp().toInstant(), transaction);
+
+        if(Instant.now().minusSeconds(60).isAfter(transTime)){
+            LOG.warn("Got and old transaction: "+transaction);
+
             return false;
         }
-        LOG.info("Got a new transaction: " + transaction);
-        transactions.add(transaction);
+        LOG.warn("Got a new transaction: " + transaction);
         return true;
     }
 
+    /*
+        Here I am using Optional to return an empty TransactionStatisticResponse to the endpoint
+        so I check if there are buckets in the Hashtable (first time GET)
+     */
     @Override
-    public TransactionStatisticResponse getTransactionStatistic() {
-        DoubleSummaryStatistics summaryStatistics = transactions.parallelStream()
-                .filter(t -> t.getTimestamp().toInstant().plusSeconds(60).isAfter(Instant.now()))
+    public Optional<TransactionStatisticResponse> getTransactionStatistic() {
+
+
+        DoubleSummaryStatistics summaryStatistics = buckets.entrySet()
+                .parallelStream()
+                .filter(k -> k.getKey().plusSeconds(60).isAfter(Instant.now()))
+                .map(Map.Entry::getValue)
                 .collect(Collectors.summarizingDouble(Transaction::getAmount));
 
-        LOG.info("I have this summary:"+ summaryStatistics.toString());
 
-        return new TransactionStatisticResponse(summaryStatistics.getSum(), summaryStatistics.getAverage(),
-                summaryStatistics.getMax(),summaryStatistics.getMin(),summaryStatistics.getCount());
-    }
+        LOG.info("Buckets:\n" + buckets.entrySet().toString());
+        if(!(summaryStatistics.getCount() == 0)) {
+            return Optional.of(new TransactionStatisticResponse(summaryStatistics.getSum(), summaryStatistics.getAverage(),
+                    summaryStatistics.getMax(), summaryStatistics.getMin(), summaryStatistics.getCount()));
+        }
 
-    @Scheduled(fixedRate = 5000)
-    private void runTransactionGC() {
-            LOG.info("transactionGC: Executing transaction GC...");
-            List<Transaction> swap = transactions.parallelStream()
-                    .filter(t -> Instant.now().minusSeconds(60).isAfter(t.getTimestamp().toInstant()))
-                    .collect(Collectors.toList());
-            oldTransactions.addAll(swap);
-            transactions.removeIf(t -> Instant.now().minusSeconds(60).isAfter(t.getTimestamp().toInstant()));
-            LOG.info("transactionGC: Done.");
+        return Optional.empty();
+
     }
 }

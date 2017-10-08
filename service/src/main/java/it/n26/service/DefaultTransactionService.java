@@ -5,6 +5,7 @@ import it.n26.domain.repository.TransactionRepository;
 import it.n26.service.integration.TransactionService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -23,6 +24,7 @@ public class DefaultTransactionService implements TransactionService {
     public DefaultTransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
+
 
     @Override
     public Response insertTransaction(Transaction transaction) {

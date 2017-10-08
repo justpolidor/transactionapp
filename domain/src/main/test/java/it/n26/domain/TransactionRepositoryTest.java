@@ -1,7 +1,7 @@
 package it.n26.domain;
 
-import it.n26.domain.repository.TransactionRepository;
 import it.n26.domain.repository.TransactionRepositoryImpl;
+import it.n26.domain.repository.TransactionRepository;
 import it.n26.domain.setup.RepositorySetup;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,13 +44,13 @@ public class TransactionRepositoryTest {
     @Test
     public void shouldReturnStatisticAvg() {
         Transaction transaction = new Transaction(100, new Timestamp(System.currentTimeMillis()-608000));
-        Transaction transaction2 = new Transaction(200, new Timestamp(System.currentTimeMillis()));
-        Transaction transaction3 = new Transaction(300, new Timestamp(System.currentTimeMillis()));
+        Transaction transaction2 = new Transaction(200, new Timestamp(System.currentTimeMillis()+1));
+        Transaction transaction3 = new Transaction(300, new Timestamp(System.currentTimeMillis()+2));
 
         transactionRepository.putTransaction(transaction);
         transactionRepository.putTransaction(transaction2);
         transactionRepository.putTransaction(transaction3);
 
-        assertThat(transactionRepository.getTransactionStatistic().getAvg(), is(250.0));
+        assertThat(transactionRepository.getTransactionStatistic().get().getAvg(), is(250.0));
     }
 }

@@ -39,4 +39,25 @@ public class Transaction {
                 ", timestamp=" + timestamp +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Transaction that = (Transaction) o;
+
+        if (Double.compare(that.amount, amount) != 0) return false;
+        return timestamp != null ? timestamp.equals(that.timestamp) : that.timestamp == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(amount);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        return result;
+    }
 }
