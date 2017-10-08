@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>
-    <name>domain Maven Webapp</name>
+    <name>Domain Module</name>
     <url>http://maven.apache.org</url>
     <dependencies>
 

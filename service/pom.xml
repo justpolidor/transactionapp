@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Service module</description>
 
 	<parent>
 		<groupId>it.n26</groupId>
