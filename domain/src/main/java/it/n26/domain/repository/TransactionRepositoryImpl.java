@@ -15,7 +15,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     private static final Logger LOG = getLogger(TransactionRepositoryImpl.class);
 
-    //Instant is the timestamp of the occurred transaction so we can easily get the transaction by the timestamp
+    //Instant is the timestamp of the occurred transaction so we can get the transaction by the timestamp
     private Map<Instant, Transaction> buckets = new Hashtable<>();
 
     @Override
@@ -26,7 +26,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
         if(Instant.now().minusSeconds(60).isAfter(transTime)){
             LOG.warn("Got and old transaction: "+transaction);
-
             return false;
         }
         LOG.warn("Got a new transaction: " + transaction);
@@ -39,7 +38,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
      */
     @Override
     public Optional<TransactionStatisticResponse> getTransactionStatistic() {
-
 
         DoubleSummaryStatistics summaryStatistics = buckets.entrySet()
                 .parallelStream()

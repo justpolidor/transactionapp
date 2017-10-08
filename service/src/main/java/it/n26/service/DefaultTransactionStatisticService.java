@@ -13,8 +13,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Service
 public class DefaultTransactionStatisticService implements TransactionsStatisticService {
 
-    private static final Logger LOG = getLogger(DefaultTransactionService.class);
-
     private final TransactionRepository transactionRepository;
 
     @Autowired
