@@ -1,5 +1,5 @@
 
-# N26 Take home test
+# Personal Project using Java 8
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/05eadedc787545b585016a5260e247b9)](https://www.codacy.com/app/justpolidor/transactionapp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=justpolidor/transactionapp&amp;utm_campaign=Badge_Grade)
 
 The main use case for our API is to calculate realtime statistic from the last 60 seconds. There will be two APIs, one of them is called every time a transaction is made. It is also the sole input of this rest API. The other onereturns the statistic based of the transactions of the last 60 seconds.
